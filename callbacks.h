@@ -52,21 +52,21 @@ inline void screen_to_complex(double sx, double sy, double &cx, double &cy) {
     cy = centerY + normY * scale;
 }
 
-inline void callback_cursor_position(GLFWwindow *window, double xpos, double ypos) {
+inline void callback_cursor_position(GLFWwindow *window, double cursorX, double cursorY) {
     if (dragging) {
-        const auto dx = xpos - dragStartX;
-        const auto dy = ypos - dragStartY;
+        const auto dx = cursorX - dragStartX;
+        const auto dy = cursorY - dragStartY;
         centerX = dragCenterX + dx / winWidth * 2.0 * scale * aspect;
         centerY = dragCenterY - dy / winHeight * 2.0 * scale; 
     }
 }
 
-inline void callback_scroll(GLFWwindow *window, double xoffset, double yoffset) {
+inline void callback_scroll(GLFWwindow *window, double scrollX, double scrollY) {
     double mx, my;
     glfwGetCursorPos(window, &mx, &my);
     double complexX, complexY;
     screen_to_complex(mx, my, complexX, complexY);
-    double zoomFactor = (yoffset > 0) ? 0.9 : 1.1;
+    double zoomFactor = (scrollY > 0) ? 0.9 : 1.1;
     scale *= zoomFactor;
     double normX = (mx / winWidth) * 2.0 - 1.0;
     double normY = -(my / winHeight * 2.0 - 1.0); 
